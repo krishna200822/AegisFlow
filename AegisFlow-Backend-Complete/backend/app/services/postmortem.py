@@ -1,0 +1,5 @@
+from datetime import datetime, timezone
+
+def build_postmortem(incident: dict, workflow: dict, repair: dict | None = None) -> dict:
+    diagnosis=incident.get('diagnosis') or {}
+    return {'incidentId':incident['id'],'createdAt':datetime.now(timezone.utc).isoformat(),'status':'draft','sections':{'summary':f"{incident.get('title','Incident')} affected workflow {workflow.get('name',incident.get('workflowId'))}.",'impact':f"Severity {incident.get('severity','unknown')}; status {incident.get('status','unknown')}.",'rootCause':diagnosis.get('likelyCause','Diagnosis has not been run or no diagnosis was persisted.'),'evidence':diagnosis.get('evidence',[]),'correctiveActions':[repair.get('summary')] if repair else ['Inspect correlated logs and validate the workflow contract.'],'prevention':'Add contract tests, preserve source payloads, and use bounded retries with idempotency checks.','limitations':'This report summarizes recorded AegisFlow data; it does not independently verify external systems.'}}

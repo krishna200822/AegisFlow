@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IncidentCreated",
+  "type": "object",
+  "required": ["incident_id", "workflow_id", "created_at"],
+  "properties": {"incident_id": {"type": "string"}, "workflow_id": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}
+}

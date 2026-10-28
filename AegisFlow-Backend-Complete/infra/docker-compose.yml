@@ -1,0 +1,15 @@
+services:
+  aegisflow-api:
+    build: ../backend
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../backend/.env
+    environment:
+      DATABASE_PATH: /app/data/aegisflow.sqlite3
+    volumes:
+      - aegisflow_data:/app/data
+    restart: unless-stopped
+volumes:
+  aegisflow_data:
