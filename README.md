@@ -13,6 +13,7 @@ a constrained repair proposal, validate it, and record a guarded recovery simula
 
 - [What is included](#what-is-included)
 - [Architecture](#architecture)
+- [Deploy frontend and backend on Render](#deploy-frontend-and-backend-on-render)
 - [Run the application on Windows](#run-the-application-on-windows)
 - [Walk through the demo](#walk-through-the-demo)
 - [Features by page](#features-by-page)
@@ -61,6 +62,31 @@ FastAPI backend (localhost:8000)
 The frontend API base defaults to `http://localhost:8000/api/v1`. The backend enables
 CORS for the local Vite origins `http://localhost:5173` and
 `http://127.0.0.1:5173`.
+
+## Deploy frontend and backend on Render
+
+Create two Render **Web Services** from this repository.
+
+### Frontend service
+
+- **Root Directory:** `AegisFlow`
+- **Build Command:** `npm ci && npm run build`
+- **Start Command:** `npm start`
+- **Environment Variable:** `VITE_API_BASE_URL` = the backend service URL, without `/api/v1`
+
+The start script serves the TanStack Start server-rendered app and its built client assets.
+
+### Backend service
+
+- **Root Directory:** `AegisFlow-Backend-Complete/backend`
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- **Environment Variable:** `CORS_ORIGINS` = the exact frontend service URL
+
+Set the frontend API variable before building so Vite includes the backend URL in the
+client bundle. If either URL changes, update the corresponding environment variable and
+redeploy. This prototype has no user authentication; do not use it with sensitive data
+or expose it for multi-user use.
 
 ## Run the application on Windows
 
